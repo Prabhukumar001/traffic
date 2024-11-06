@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Monitoring Result</title>
+    <style>
+        /* Styles for the countdown timer and signal color */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        .result-container {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 500px;
+        }
+        .timer {
+            font-size: 2em;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: color 0.5s ease;
+        }
+        .status {
+            font-size: 1.5em;
+            margin-top: 5px;
+            transition: color 0.5s ease;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+        .progress-fill {
+            height: 100%;
+            transition: width 1s linear;
+            border-radius: 10px;
+        }
+        #back-link {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Traffic Monitoring Result</h1>
+    <div class="result-container">
+        <p>Vehicle Count: {{ vehicle_count }}</p>
+        <p>Traffic Signal Time: <span id="signal-time">{{ signal_time }}</span></p>
+        <div class="timer" id="timer"></div>
+        <p class="status" id="status-message"></p>
+        <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+        </div>
+        <a href="/" id="back-link">Upload Another Image</a>
+    </div>
+
+    <script>
+        // Parse the countdown time from the signal_time variable
+        const signalTime = "{{ signal_time }}";
+        let countdown = parseInt(signalTime.match(/\d+/)[0]);
+        const maxTime = Math.min(60, Math.max(10, countdown)); // Adjust time limits between 10 and 60 seconds
+
+        // Elements to update in real-time
+        const timerElement = document.getElementById('timer');
+        const statusElement = document.getElementById('status-message');
+        const progressFill = document.getElementById('progress-fill');
+
+        // Initial timer display
+        timerElement.textContent = countdown + " seconds";
+        progressFill.style.width = "100%";
+
+        // Set initial status and color
+        const setSignalColor = (color, message) => {
+            timerElement.style.color = color;
+            statusElement.style.color = color;
+            statusElement.textContent = message;
+            progressFill.style.backgroundColor = color;
+        };
+
+        if (signalTime.includes('Green')) {
+            setSignalColor("green", "Traffic signal is Green");
+        } else if (signalTime.includes('Yellow')) {
+            setSignalColor("orange", "Traffic signal is Yellow");
+        } else if (signalTime.includes('Red')) {
+            setSignalColor("red", "Traffic signal is Red");
+        }
+
+        // Countdown timer with progress bar animation
+        const countdownInterval = setInterval(() => {
+            countdown -= 1;
+            timerElement.textContent = countdown + " seconds";
+            const progressWidth = (countdown / maxTime) * 100;
+            progressFill.style.width = progressWidth + "%";
+
+            // Check if countdown reached zero
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('back-link').click();  // Automatically redirects to home
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

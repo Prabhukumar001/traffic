@@ -1,0 +1,139 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Monitoring System - Upload Image</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Traffic Monitoring System</h1>
+        <p>Upload an image of the road to analyze traffic conditions in real-time.</p>
+        
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/*" required>
+            <button type="submit" class="upload-btn">Analyze Traffic</button>
+        </form>
+    </div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Monitoring System - Upload Image</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* General page styling */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        label {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        label:hover {
+            background-color: #45a049;
+        }
+        #image-preview {
+            margin-top: 20px;
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        .analyze-btn {
+            display: none; /* Hidden initially */
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-left: auto;   /* Center the button */
+            margin-right: auto;  /* Center the button */
+            width: 100%;         /* Full width for better alignment */
+            transition: background-color 0.3s ease;
+        }
+        .analyze-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Traffic Monitoring System</h1>
+        <p>Upload an image of the road to analyze traffic conditions in real-time.</p>
+        
+        <form id="upload-form" action="/" method="POST" enctype="multipart/form-data">
+            <label for="file-input">Choose Image</label>
+            <input type="file" id="file-input" name="image" accept="image/*" required onchange="previewImage()">
+            <img id="image-preview" alt="Image Preview">
+            <button type="button" class="analyze-btn" id="analyze-button">Analyze Traffic</button>
+        </form>
+    </div>
+
+    <script>
+        // Function to preview the image when selected
+        function previewImage() {
+            const fileInput = document.getElementById('file-input');
+            const imagePreview = document.getElementById('image-preview');
+            const analyzeButton = document.getElementById('analyze-button');
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    analyzeButton.style.display = 'block'; // Show the analyze button
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+
+        // Handle analyze button click
+        document.getElementById('analyze-button').onclick = function() {
+            document.getElementById('upload-form').submit(); // Submit the form
+        };
+    </script>
+</body>
+</html>
